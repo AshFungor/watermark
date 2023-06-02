@@ -11,31 +11,31 @@ from statistics import median
 from parameters import *
 import numpy as np
 
-def local_dct(P):
-    C = np.zeros((8, 8))
-    for row in range(8):
-        for column in range(8):
-            if row == 0:
-                C[row][column] = 1 / sqrt(8)
-            else:
-                C[row][column] = (1 / 2) * cos((2 * column + 1) * row * pi / 16)
-    return np.matmul(np.matmul(C, P), C.T)
+# def local_dct(P):
+#     C = np.zeros((8, 8))
+#     for row in range(8):
+#         for column in range(8):
+#             if row == 0:
+#                 C[row][column] = 1 / sqrt(8)
+#             else:
+#                 C[row][column] = (1 / 2) * cos((2 * column + 1) * row * pi / 16)
+#     return np.matmul(np.matmul(C, P), C.T)
 
-def local_idct(G):
-    C = np.zeros((8, 8))
-    for row in range(8):
-        for column in range(8):
-            if row == 0:
-                C[row][column] = 1 / sqrt(8)
-            else:
-                C[row][column] = (1 / 2) * cos((2 * column + 1) * row * pi / 16)
-    return np.matmul(np.matmul(C.T, G), C)
+# def local_idct(G):
+#     C = np.zeros((8, 8))
+#     for row in range(8):
+#         for column in range(8):
+#             if row == 0:
+#                 C[row][column] = 1 / sqrt(8)
+#             else:
+#                 C[row][column] = (1 / 2) * cos((2 * column + 1) * row * pi / 16)
+#     return np.matmul(np.matmul(C.T, G), C)
 
-# def local_dct(array):
-#     return cv2.dct(np.float32(array))
+def local_dct(array):
+    return dct(np.float32(array))
 
-# def local_idct(array):
-#     return cv2.idct(np.float32(array))
+def local_idct(array):
+    return idct(np.float32(array))
 
 def init(container_path):
     global g, ROW, COLUMN
@@ -59,6 +59,7 @@ def insert_block(matrix, bit, next_matrix):
     # m = matrix.copy()
     matrix = local_dct(matrix)
     next_matrix = local_dct(next_matrix)
+    # next_matrix = np.zeros((8, 8))
     # print('changed: ')
     # print(np.round(local_idct(matrix), 0) == m)
     # print('dct')
@@ -114,6 +115,7 @@ def extract_block(matrix, next_matrix):
     # print(matrix)
     matrix = local_dct(matrix)
     next_matrix = local_dct(next_matrix)
+    # next_matrix = np.zeros((8, 8))
     delta = matrix[g.row, g.column] - next_matrix[g.row, g.column]
     w = None
     if delta < (-g.T) or ((delta > 0) and (delta < g.T)):
@@ -154,7 +156,7 @@ def inverse_arnold_transformation(binary_matrix, times):
 def insert(watermark_map):
     global g
     container_map = g.container_map
-    watermark_map = arnold_transformation(watermark_map, 3)
+    watermark_map = arnold_transformation(watermark_map, 1)
     # watermark_map = watermark_map
     # watermark_map = np.zeros((8, 8))
     blue = np.subtract(container_map[:, :, 2], 128)
@@ -216,7 +218,7 @@ def extract():
             watermark_map[brs // 8, bcs // 8] = bit
 
     # print(watermark_map)
-    return inverse_arnold_transformation(watermark_map, 3)
+    return inverse_arnold_transformation(watermark_map, 1)
     # return watermark_map
             
 

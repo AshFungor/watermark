@@ -77,11 +77,212 @@ def test_routine():
     table_2.close()
     table_1.close()
 
+def coefficient_test_k():
+    global g
+    results = open(f'{result_folder}/psnr_and_ber_coefficients_data.txt', 'w')
+    psnr_s = []
+    ber_blur = []
+    ber_sharpen = []
+    ber_smooth = []
+    ber_jpeg1 = []
+    ber_jpeg2 = []
+    for k in range(12, 100, 12):
+        g.K = k
+        psnr, ber_s = base_test(f'{container_folder}/container_tank_cat.png', f'{watermark_folder}/psi.png')
+        results.write(f'Z = {g.Z}; K = {g.K}; T = {g.T}; PSNR = {round(psnr, 3)}; AVG_BER = {round(sum(ber_s) / len(ber_s), 3)}\n')
+        psnr_s.append(psnr)
+        ber_blur.append(ber_s[0])
+        ber_sharpen.append(ber_s[1])
+        ber_smooth.append(ber_s[2])
+        ber_jpeg1.append(ber_s[3])
+        ber_jpeg2.append(ber_s[4])
+    r = range(12, 100, 12)
+    plt.plot(r, ber_blur, color='Orange')
+    plt.xticks(r)
+    plt.plot(r, ber_sharpen, color='Blue')
+    plt.xticks(r)
+    plt.plot(r, ber_smooth, color='Red')
+    plt.xticks(r)
+    plt.plot(r, ber_jpeg1, color='Green')
+    plt.xticks(r)
+    plt.plot(r, ber_jpeg2, color='Purple')
+    plt.xticks(r)
+    plt.xlabel(f'K')
+    plt.ylabel('BER')
+    plt.legend(['blur', 'sharpen', 'smooth', 'jpeg (1)', 'jpeg (2)'])
+    # plt.show()
+    plt.savefig(f'{result_folder}/ber_plot_ber_k.png')
+    plt.clf()
+    ber_blur.clear()
+    ber_sharpen.clear()
+    ber_smooth.clear()
+    ber_jpeg1.clear()
+    ber_jpeg2.clear()
+    plt.plot(r, psnr_s, color='Blue')
+    plt.xticks(r)
+    plt.xlabel(f'K')
+    plt.ylabel('PSNR')
+    plt.savefig(f'{result_folder}/psnr_plot_psnr_k.png')
+    plt.clf()
+    results.close()
+
+def coefficient_test_t():
+    global g
+    results = open(f'{result_folder}/psnr_and_ber_coefficients_data.txt', 'w')
+    psnr_s = []
+    ber_blur = []
+    ber_sharpen = []
+    ber_smooth = []
+    ber_jpeg1 = []
+    ber_jpeg2 = []
+    for t in range(80, 500, 30):
+        g.T = t
+        g.K = int(t * 0.15)
+        psnr, ber_s = base_test(f'{container_folder}/container_tank_cat.png', f'{watermark_folder}/psi.png')
+        results.write(f'Z = {g.Z}; K = {g.K}; T = {g.T}; PSNR = {round(psnr, 3)}; AVG_BER = {round(sum(ber_s) / len(ber_s), 3)}\n')
+        psnr_s.append(psnr)
+        ber_blur.append(ber_s[0])
+        ber_sharpen.append(ber_s[1])
+        ber_smooth.append(ber_s[2])
+        ber_jpeg1.append(ber_s[3])
+        ber_jpeg2.append(ber_s[4])
+    r = range(80, 500, 30)
+    plt.plot(r, ber_blur, color='Orange')
+    plt.xticks(r)
+    plt.plot(r, ber_sharpen, color='Blue')
+    plt.xticks(r)
+    plt.plot(r, ber_smooth, color='Red')
+    plt.xticks(r)
+    plt.plot(r, ber_jpeg1, color='Green')
+    plt.xticks(r)
+    plt.plot(r, ber_jpeg2, color='Purple')
+    plt.xticks(r)
+    plt.xlabel(f'T')
+    plt.ylabel('BER')
+    plt.legend(['blur', 'sharpen', 'smooth', 'jpeg (1)', 'jpeg (2)'])
+    # plt.show()
+    plt.savefig(f'{result_folder}/ber_plot_ber_t.png')
+    plt.clf()
+    ber_blur.clear()
+    ber_sharpen.clear()
+    ber_smooth.clear()
+    ber_jpeg1.clear()
+    ber_jpeg2.clear()
+    plt.plot(r, psnr_s, color='Blue')
+    plt.xticks(r)
+    plt.xlabel(f'T')
+    plt.ylabel('PSNR')
+    plt.savefig(f'{result_folder}/psnr_plot_psnr_t.png')
+    plt.clf()
+    results.close()
+
+def coefficient_test_z():
+    global g
+    results = open(f'{result_folder}/psnr_and_ber_coefficients_data.txt', 'w')
+    psnr_s = []
+    ber_blur = []
+    ber_sharpen = []
+    ber_smooth = []
+    ber_jpeg1 = []
+    ber_jpeg2 = []
+    for z in range(2, 50, 5):
+        g.Z = z
+        psnr, ber_s = base_test(f'{container_folder}/container_tank_cat.png', f'{watermark_folder}/psi.png')
+        results.write(f'Z = {g.Z}; K = {g.K}; T = {g.T}; PSNR = {round(psnr, 3)}; AVG_BER = {round(sum(ber_s) / len(ber_s), 3)}\n')
+        psnr_s.append(psnr)
+        ber_blur.append(ber_s[0])
+        ber_sharpen.append(ber_s[1])
+        ber_smooth.append(ber_s[2])
+        ber_jpeg1.append(ber_s[3])
+        ber_jpeg2.append(ber_s[4])
+    r = range(2, 50, 5)
+    plt.plot(r, ber_blur, color='Orange')
+    plt.xticks(r)
+    plt.plot(r, ber_sharpen, color='Blue')
+    plt.xticks(r)
+    plt.plot(r, ber_smooth, color='Red')
+    plt.xticks(r)
+    plt.plot(r, ber_jpeg1, color='Green')
+    plt.xticks(r)
+    plt.plot(r, ber_jpeg2, color='Purple')
+    plt.xticks(r)
+    plt.xlabel(f'Z')
+    plt.ylabel('BER')
+    plt.legend(['blur', 'sharpen', 'smooth', 'jpeg (1)', 'jpeg (2)'])
+    # plt.show()
+    plt.savefig(f'{result_folder}/ber_plot_ber_z.png')
+    plt.clf()
+    ber_blur.clear()
+    ber_sharpen.clear()
+    ber_smooth.clear()
+    ber_jpeg1.clear()
+    ber_jpeg2.clear()
+    plt.plot(r, psnr_s, color='Blue')
+    plt.xticks(r)
+    plt.xlabel(f'Z')
+    plt.ylabel('PSNR')
+    plt.savefig(f'{result_folder}/psnr_plot_psnr_z.png')
+    plt.clf()
+    results.close()
+
+def coefficients_test_ultimate():
+    global g
+    results = open(f'{result_folder}/psnr_and_ber_coefficients_data.txt', 'w')
+    psnr_s = []
+    ber_blur = []
+    ber_sharpen = []
+    ber_smooth = []
+    ber_jpeg1 = []
+    ber_jpeg2 = []
+    for t in range(80, 500, 30):
+        g.T = t
+        g.K = int(t * 0.15)
+        g.Z = int(g.K / 6)
+        psnr, ber_s = base_test(f'{container_folder}/container_tank_cat.png', f'{watermark_folder}/psi.png')
+        results.write(f'Z = {g.Z}; K = {g.K}; T = {g.T}; PSNR = {round(psnr, 3)}; AVG_BER = {round(sum(ber_s) / len(ber_s), 3)}\n')
+        psnr_s.append(psnr)
+        ber_blur.append(ber_s[0])
+        ber_sharpen.append(ber_s[1])
+        ber_smooth.append(ber_s[2])
+        ber_jpeg1.append(ber_s[3])
+        ber_jpeg2.append(ber_s[4])
+    r = range(80, 500, 30)
+    plt.plot(r, ber_blur, color='Orange')
+    plt.xticks(r)
+    plt.plot(r, ber_sharpen, color='Blue')
+    plt.xticks(r)
+    plt.plot(r, ber_smooth, color='Red')
+    plt.xticks(r)
+    plt.plot(r, ber_jpeg1, color='Green')
+    plt.xticks(r)
+    plt.plot(r, ber_jpeg2, color='Purple')
+    plt.xticks(r)
+    plt.xlabel(f'T')
+    plt.ylabel('BER')
+    plt.legend(['blur', 'sharpen', 'smooth', 'jpeg (1)', 'jpeg (2)'])
+    # plt.show()
+    plt.savefig(f'{result_folder}/ber_plot_ber_all.png')
+    plt.clf()
+    ber_blur.clear()
+    ber_sharpen.clear()
+    ber_smooth.clear()
+    ber_jpeg1.clear()
+    ber_jpeg2.clear()
+    plt.plot(r, psnr_s, color='Blue')
+    plt.xticks(r)
+    plt.xlabel(f'T')
+    plt.ylabel('PSNR')
+    plt.savefig(f'{result_folder}/psnr_plot_psnr_all.png')
+    plt.clf()
+    results.close()
 
 def jpeg_test():
     ber_s = []
     init(f'{container_folder}/container_tank_cat.png')
-    for row, column in [(6, 0), (4, 2), (2, 4), (0, 6)]:
+    g.Z = 2
+    g.K = 12
+    g.T = 80
+    for row, column in [(2, 2)]:
         g.row = row
         g.column = column
         print('Performing JPEG (0-100) test for:')
@@ -142,7 +343,7 @@ def base_test(container_path, watermark_path):
     init(f'{result_folder}/result_smooth.png')
     res = extract()
     encode_1b(res, w_width, w_height, f'{result_folder}/watermark_smooth.png')
-    BER.append(check_ber(f'{result_folder}/watermark_temp.png', f'{result_folder}/watermark_sharpen.png'))
+    BER.append(check_ber(f'{result_folder}/watermark_temp.png', f'{result_folder}/watermark_smooth.png'))
     # test (JPEG) (1)
     print('testing JPEG (1)...')
     img = Image.open(f'{result_folder}/result.png')
@@ -178,6 +379,10 @@ if __name__ == '__main__':
         print('1 - Coefficient location test')
         print('2 - JPEG test')
         print('3 - Base tests for defaults')
+        print('4 - Coefficient test for K')
+        print('5 - Coefficient test for T')
+        print('6 - Coefficient test for Z')
+        print('7 - Coefficient test for T, K and Z (proportional)')
         ans = input()
         if ans == '1':
             test_routine()
@@ -185,6 +390,14 @@ if __name__ == '__main__':
             jpeg_test()
         elif ans == '3':
             base_test(f'{container_folder}/container_tank_cat.png', f'{watermark_folder}/psi.png')
+        elif ans == '4':
+            coefficient_test_k()
+        elif ans == '5':
+            coefficient_test_t()
+        elif ans == '6':
+            coefficient_test_z()
+        elif ans == '7':
+            coefficients_test_ultimate()
         else:
             raise ValueError('expected inputs between 1-2')
     else:

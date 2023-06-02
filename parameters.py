@@ -6,8 +6,8 @@ class globals():
         self.filename = ''
         # constants
         self.Z = 2
-        self.row = 3
-        self.column = 3
+        self.row = 2
+        self.column = 2
         self.T = 80
         self.K = 12
 
